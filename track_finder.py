@@ -57,10 +57,11 @@ def find_a_track():
   track_info = dict()
   track_info["Track"] = track_name
   track_info["Artist"] = artist_name
+  track_info["Artist Genres"] = artist_genres
   track_info["BPM"] = track_bpm
   track_info["Danceability"] = track_danceability
   track_info["URL"] = track_url
-
+  
   return track_info
 
 

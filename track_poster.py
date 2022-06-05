@@ -27,9 +27,24 @@ def post_a_track():
   tweet += "\n"
   tweet += "Danceability: " + track_info["Danceability"]
   tweet += "\n"
+
+  if track_info["Artist Genres"]:
+    tweet += "Related Genres: "
+
+  # Append genres
+  for i in range(len(track_info["Artist Genres"])):
+    # Add a comma after each genre, except if it is the last genre in the list
+    if (i != len(track_info["Artist Genres"]) - 1):
+      tweet += track_info["Artist Genres"][i] + ", "
+    else:
+      tweet += track_info["Artist Genres"][i]
+      tweet += "\n"
+
   tweet += track_info["URL"]
+  
   try:
     response = client.create_tweet(text=tweet)
+    print(response)
   except:
     print("ERROR")
     print(response)

@@ -3,9 +3,7 @@ import constants
 import random
 from spotipy.oauth2 import SpotifyClientCredentials
 
-
-
-def main():
+def find_a_track():
   sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
     client_id=constants.spotify_client_id,
     client_secret=constants.spotify_client_secret))
@@ -22,10 +20,14 @@ def main():
     house_playlist = sp.next(house_playlist)
 
   track = house_playlist["items"][track_number%100-1]
+
   #URI
   track_uri = track["track"]["uri"]
+
+  #URL
+  track_url = "https://open.spotify.com/track/" + track["track"]["id"]
   
-  #Track name
+  #Track Title
   track_name = track["track"]["name"]
   
   #Main Artist
@@ -43,19 +45,26 @@ def main():
   #Popularity of the track
   track_pop = track["track"]["popularity"]
 
+  #Track Release Date
+  track_release = track["track"]["album"]["release_date"]
+
   #Track Features
   track_danceability = str(round(sp.audio_features(track_uri)[0]['danceability'], 2) * 100) + "%"
   track_bpm = int(round(sp.audio_features(track_uri)[0]['tempo'], 0))
   track_energy = sp.audio_features(track_uri)[0]['energy']
   
-  print("Track:", track_name)
-  print("Artist:", artist_name)
-  print("BPM:", track_bpm)
-  print("Danceability:", track_danceability)
-  print("Energy:", track_energy)
+  # Return a dictionary with the compiled track info
+  track_info = dict()
+  track_info["Track"] = track_name
+  track_info["Artist"] = artist_name
+  track_info["BPM"] = track_bpm
+  track_info["Danceability"] = track_danceability
+  track_info["URL"] = track_url
+
+  return track_info
 
 
-
+# Given a playlist ID, returns the length
 def find_playlist_length(playlist_id):
   sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
     client_id=constants.spotify_client_id,
@@ -75,9 +84,5 @@ def find_playlist_length(playlist_id):
       playlist = None
   return counter
 
-main()
-  
-  
-
-
-  
+if __name__ == "__main__":
+  print(find_a_track())
